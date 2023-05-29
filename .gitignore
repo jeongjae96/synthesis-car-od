@@ -261,3 +261,12 @@ $RECYCLE.BIN/
 # End of https://www.toptal.com/developers/gitignore/api/python,jupyternotebooks,windows,macos,linux
 
 data/
+*.csv
+*.pt
+*.pth
+*.yaml
+*.jpg
+
+YOLOv8/
+
+wandb/

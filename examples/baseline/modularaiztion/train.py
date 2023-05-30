@@ -8,6 +8,7 @@ from config import CFG
 def validation(
     model,
     val_loader,
+    val_coco_gt,
     device
 ):
     model.eval()
@@ -24,11 +25,11 @@ def validation(
                 labels = output["labels"].cpu().numpy()
                 scores = output["scores"].cpu().numpy()
     
-
 def train(
     model, 
     train_loader,
     val_loader,
+    val_coco_gt,
     device
 ):
     model.to(device)
@@ -55,6 +56,8 @@ def train(
             optimizer.step()
 
             train_loss.append(losses.item())
+
+        # validation
 
         if scheduler is not None:
             scheduler.step()

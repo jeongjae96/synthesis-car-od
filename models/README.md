@@ -29,6 +29,11 @@ cd mmdetection
 pip install -r requirements/build.txt
 pip install "git+https://github.com/open-mmlab/cocoapi.git#subdirectory=pycocotools"
 pip install -v -e .  # or "python setup.py develop"
+pip install mmcv-full==1.7.0 -f https://download.openmmlab.com/mmcv/dist/{CUDA version}/{Pytorch version}/index.html 
+# e.g.
+# pip install mmcv-full==1.7.0 -f https://download.openmmlab.com/mmcv/dist/cu121/torch1.7.1/index.html
+pip install -r requirements/albu.txt
+pip install wandb
 ```
 
 On macOS, replace the last command with

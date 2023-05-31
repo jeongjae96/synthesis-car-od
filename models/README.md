@@ -1,19 +1,58 @@
-# [MMDetection](https://mmdetection.readthedocs.io/en/latest/)
+# MMDetection
 
-- MMDetection works on Linux, Windows, and macOS. It requires Python 3.7+, CUDA 9.2+, and PyTorch 1.6+.
+## [v2.25.2](https://mmdetection.readthedocs.io/en/v2.2.0/install.html)
 
-## Prerequisites
+- Windows is not officially supported
 
-1.  Create a conda environment and activate it.
+### Installation
+
+1. Create a conda environment and activate it.
 
 ```
-conda create --name openmmlab python=3.8 -y
-conda activate openmmlab
+conda create -n openmmlab_v2 python=3.8 -y
+conda activate openmmlab_v2
 ```
 
 2. Install PyTorch following [official instructions](https://pytorch.org/get-started/locally/)
 
-## Installation
+3. Clone the mmdetection v2.25.2 repository.
+
+```
+# pwd: ~/models
+git clone -b v2.25.2 https://github.com/open-mmlab/mmdetection.git
+cd mmdetection
+```
+
+4. Install build requirements and then install mmdetection.
+
+```
+pip install -r requirements/build.txt
+pip install "git+https://github.com/open-mmlab/cocoapi.git#subdirectory=pycocotools"
+pip install -v -e .  # or "python setup.py develop"
+```
+
+On macOS, replace the last command with
+
+```
+CC=clang CXX=clang++ CFLAGS='-stdlib=libc++' pip install -e .
+```
+
+## [v3.0.0](https://mmdetection.readthedocs.io/en/latest/)
+
+- MMDetection works on Linux, Windows, and macOS. It requires Python 3.7+, CUDA 9.2+, and PyTorch 1.6+.
+
+### Prerequisites
+
+1.  Create a conda environment and activate it.
+
+```
+conda create --name openmmlab_v3 python=3.8 -y
+conda activate openmmlab_v3
+```
+
+2. Install PyTorch following [official instructions](https://pytorch.org/get-started/locally/)
+
+### Installation
 
 1. Install [MMEngine](https://github.com/open-mmlab/mmengine) and [MMCV](https://github.com/open-mmlab/mmcv) using [MIM](https://github.com/open-mmlab/mim).
 
@@ -34,7 +73,7 @@ pip install -v -e .
 # thus any local modifications made to the code will take effect without reinstallation.
 ```
 
-## Verify the Installation
+### Verify the Installation
 
 1. Download config and checkpoint files.
 

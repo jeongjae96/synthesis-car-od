@@ -15,12 +15,19 @@ conda activate openmmlab_v2
 
 2. Install PyTorch following [official instructions](https://pytorch.org/get-started/locally/)
 
+```
+# example
+# CUDA 11.0
+conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
+```
+
 3. Clone the mmdetection v2.25.2 repository.
 
 ```
-# pwd: ~/models
+# pwd: ~/models/mmdetection/
 git clone -b v2.25.2 https://github.com/open-mmlab/mmdetection.git
-cd mmdetection
+mv mmdetection mmdetection_v2
+cd mmdetection_v2
 ```
 
 4. Install build requirements and then install mmdetection.
@@ -29,9 +36,9 @@ cd mmdetection
 pip install -r requirements/build.txt
 pip install "git+https://github.com/open-mmlab/cocoapi.git#subdirectory=pycocotools"
 pip install -v -e .  # or "python setup.py develop"
-pip install mmcv-full==1.7.0 -f https://download.openmmlab.com/mmcv/dist/{CUDA version}/{Pytorch version}/index.html 
-# e.g.
-# pip install mmcv-full==1.7.0 -f https://download.openmmlab.com/mmcv/dist/cu121/torch1.7.1/index.html
+pip install -U openmim
+mim install mmengine
+mim install mmcv-full==1.7.0
 pip install -r requirements/albu.txt
 pip install wandb
 ```
@@ -71,7 +78,8 @@ mim install "mmcv>=2.0.0"
 
 ```
 git clone https://github.com/open-mmlab/mmdetection.git
-cd mmdetection
+mv mmdetection mmdetection_v3
+cd mmdetection_v3
 pip install -v -e .
 # "-v" means verbose, or more output
 # "-e" means installing a project in editable mode,

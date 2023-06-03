@@ -9,7 +9,7 @@ from mmcv.parallel import MMDataParallel
 import os
 import glob
 import argparse
-
+from tqdm.auto import tqdm
 import pandas as pd
 import numpy as np
 from pycocotools.coco import COCO
@@ -76,14 +76,15 @@ classes = (
 root = os.path.join(args.root_dir, 'data/')
 
 # config file 가져오기
-config_file = glob.glob(os.path.join(args.config_path, '*.py'))
+config_file = glob.glob(os.path.join(args.config_path, '*.py'))[0]
 cfg = Config.fromfile(config_file)
 
 # data config 수정
 cfg.data.test.classes = classes
 cfg.data.test.img_prefix = root
-cfg.data.test.ann_file = os.path.join(root, 'coco_test.json')
-cfg.data.test.pipeline[1]['img_scale'] = (512,512) # Resize
+cfg.data.test.ann_file = os.path.join(root, 'test.json')
+# cfg.data.test.pipeline[1]['img_scale'] = (512,512) # Resize
+cfg.data.test.pipeline[1]['img_scale'] = (1024,1024) # Resize
 cfg.data.test.test_mode = True
 cfg.data.samples_per_gpu = 4
 cfg.gpu_ids = [1]
@@ -116,7 +117,7 @@ coco = COCO(cfg.data.test.ann_file)
 class_num = len(classes)
 results = pd.read_csv(os.path.join(root, 'sample_submission.csv'))
 
-for i, out in enumerate(output):
+for i, out in enumerate(tqdm(output)):
     image_info = coco.loadImgs(coco.getImgIds(imgIds=i))[0]
     file_name = os.path.basename(image_info['file_name'])
 

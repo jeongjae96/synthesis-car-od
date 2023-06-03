@@ -92,12 +92,13 @@ train_txts = sorted(glob.glob(os.path.join(TRAIN_PATH, '*.txt')))
 print('making YOLO label txt files...')
 make_yolo_dataset(train_imgs, train_txts)
 
-img_names = []
+# img_names = []
+imgs = []
 labels = []
 
 for img, txt in zip(train_imgs, train_txts):
-    img_name = img.replace('\\', '/').split('/')[-1]
-    txt_name = txt.replace('\\', '/').split('/')[-1]
+    # img_name = img.replace('\\', '/').split('/')[-1]
+    # txt_name = txt.replace('\\', '/').split('/')[-1]
 
     with open(txt, 'r') as t:
         lines = t.readlines()
@@ -107,7 +108,8 @@ for img, txt in zip(train_imgs, train_txts):
             label = int(float(line.split(' ')[0]))
             bbox = ' '.join(line.split(' ')[1:])
 
-            img_names.append(img_name)
+            # img_names.append(img_name)
+            imgs.append(img)
             labels.append(label)
 
 sgkf = StratifiedGroupKFold(
@@ -116,15 +118,15 @@ sgkf = StratifiedGroupKFold(
     random_state=args.random_state,
 )
 
-img_names = np.array(img_names)
+imgs = np.array(imgs)
 
 print('splitting data using stratified group kfold...')
-for i, (train_idx, val_idx) in enumerate(sgkf.split(img_names, labels, img_names)):
+for i, (train_idx, val_idx) in enumerate(sgkf.split(imgs, labels, imgs)):
 
-    train_imgs = np.unique(img_names[train_idx])
+    train_imgs = np.unique(imgs[train_idx])
     train_imgs = list(map(lambda x : os.path.abspath(x).replace('\\', '/'), train_imgs))
 
-    val_imgs = np.unique(img_names[val_idx])
+    val_imgs = np.unique(imgs[val_idx])
     val_imgs = list(map(lambda x : os.path.abspath(x).replace('\\', '/'), val_imgs))
 
     with open(os.path.join(YOLO_PATH, f'train_{i}.txt'), 'w') as path_file:

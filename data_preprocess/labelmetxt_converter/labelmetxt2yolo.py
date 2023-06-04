@@ -130,7 +130,7 @@ def make_data_yaml(data_root, n_splits):
         categories[i] = name
 
     print('saving YAML configuration...')
-    for i in range(args.n_splits):
+    for i in range(n_splits):
         yaml_config = {
             'path' : os.path.abspath(yolo_path).replace('\\', '/') + '/',
             'train' : f'train_{i}.txt',

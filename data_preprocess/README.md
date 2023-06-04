@@ -1,3 +1,33 @@
+# Data Preprocess
+
+- ```main.py```: Labelme TXT format을 YOLO & COCO format으로 변환
+
+```
+python main.py -d {data_root} -n {n_splits} -s {seed}
+```
+
+## labelmetxt_converter
+
+- ```labelmetxt2yolo.py```: Labelme TXT format을 YOLO format으로 변환 및 stratified group kfold를 이용해 train/validation split
+
+```
+python labelmetxt2yolo.py -d {data_root} -n {n_splits} -s {seed}
+```
+
+- ```labelmetxt2coco.py```: COCO train/test data로 변환
+
+```
+python labelmetxt2coco.py -d {data_root}
+```
+
+## split_data
+
+- ```split_coco.py```: COCO train 데이터를 stratified group kfold를 이용해 train/validation split
+
+```
+python split_coco.py -d {data_root} -n {n_splits} -s {seed}
+```
+
 # Data Format
 
 ## [Our Data Format](https://dacon.io/competitions/official/236107/data)

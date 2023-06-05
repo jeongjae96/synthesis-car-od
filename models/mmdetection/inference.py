@@ -97,7 +97,8 @@ cfg.model.train_cfg = None
 dataset = build_dataset(cfg.data.test)
 data_loader = build_dataloader(
     dataset,
-    samples_per_gpu=1,
+    # samples_per_gpu=1,
+    samples_per_gpu=8,
     workers_per_gpu=cfg.data.workers_per_gpu,
     dist=False,
     shuffle=False
@@ -117,6 +118,14 @@ coco = COCO(cfg.data.test.ann_file)
 class_num = len(classes)
 results = pd.read_csv(os.path.join(root, 'sample_submission.csv'))
 
+file_names = []
+class_ids = []
+confidences = []
+x_mins = []
+y_mins = []
+x_maxes = []
+y_maxes = []
+
 for i, out in enumerate(tqdm(output)):
     image_info = coco.loadImgs(coco.getImgIds(imgIds=i))[0]
     file_name = os.path.basename(image_info['file_name'])
@@ -135,14 +144,33 @@ for i, out in enumerate(tqdm(output)):
             # point4_x : 검출한 객체 좌하단 x좌표 == x_min
             # point4_y : 검출한 객체 좌하단 y좌표 == y_max
 
-            results.loc[len(results)] = {
-                "file_name": file_name,
-                "class_id": j,
-                "confidence": score,
-                "point1_x": x_min, "point1_y": y_min,
-                "point2_x": x_max, "point2_y": y_min,
-                "point3_x": x_max, "point3_y": y_max,
-                "point4_x": x_min, "point4_y": y_max
-            }
+            # results.loc[len(results)] = {
+            #     "file_name": file_name,
+            #     "class_id": j,
+            #     "confidence": score,
+            #     "point1_x": x_min, "point1_y": y_min,
+            #     "point2_x": x_max, "point2_y": y_min,
+            #     "point3_x": x_max, "point3_y": y_max,
+            #     "point4_x": x_min, "point4_y": y_max
+            # }
+            file_names.append(file_name)
+            class_ids.append(j)
+            confidences.append(score)
+            x_mins.append(x_min)
+            y_mins.append(y_min)
+            x_maxes.append(x_max)
+            y_maxes.append(y_max)
+
+results['file_name'] = file_names
+results['class_id'] = class_ids
+results['confidence'] = confidences
+results['point1_x'] = x_mins
+results['point1_y'] = y_mins
+results['point2_x'] = x_maxes
+results['point2_y'] = y_mins
+results['point3_x'] = x_maxes
+results['point3_y'] = y_maxes
+results['point4_x'] = x_mins
+results['point4_y'] = y_maxes
 
 results.to_csv('./sample_inference.csv', index=False)

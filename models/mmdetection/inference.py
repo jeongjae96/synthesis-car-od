@@ -25,6 +25,7 @@ parser.add_argument(
     '-r',
     '--root_dir',
     dest='root_dir',
+    default='../../',
     help='root directory'
 )
 parser.add_argument(
@@ -173,4 +174,5 @@ results['point3_y'] = y_maxes
 results['point4_x'] = x_mins
 results['point4_y'] = y_maxes
 
-results.to_csv('./sample_inference.csv', index=False)
+results.sort_values(by=['confidence'], ascending=False, inplace=True)
+results.to_csv(f'{config_file.split(".")[0]}_{args.weights.split(".")[0]}.csv', index=False)

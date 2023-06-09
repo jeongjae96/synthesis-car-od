@@ -17,14 +17,14 @@ img_norm_cfg = dict(
 )
 
 train_alb_transform = [
-    # dict(
-    #     type='ToGray',
-    #     p=1.0
-    # ),
-    # dict(
-    #     type='CLAHE',
-    #     p=1.0
-    # ),
+    dict(
+        type='ToGray',
+        p=0.5
+    ),
+    dict(
+        type='CLAHE',
+        p=0.5
+    ),
     dict(
         type='MotionBlur',
         blur_limit=3,
@@ -147,7 +147,7 @@ data = dict(
     train=dict(
         type=dataset_type,
         classes=classes,
-        ann_file=data_root + f'coco/train_{fold_num}.json',
+        ann_file=data_root + f'coco/train.json',
         img_prefix=data_root,
         pipeline=train_pipeline),
     
@@ -166,7 +166,7 @@ data = dict(
         pipeline=test_pipeline))
 
 print('\n'*10)
-print(f'starts k-fold with {data_root}train{fold_num}.json')
+print(f'starts k-fold with {data_root}train.json')
 print('\n'*10)
 
 
@@ -183,17 +183,17 @@ lr_config = dict(
     warmup_ratio=1.0 / 10,
     min_lr_ratio=7e-6)
 # runtime settings
-total_epochs = 20
+total_epochs = 10
 
 
 ###########################################################################
 #Runtime
 ###########################################################################
 
-expr_name = f'swinB_fold_{fold_num}'
+expr_name = f'swinB'
 dist_params = dict(backend='nccl')
 
-checkpoint_config = dict(interval=9)
+checkpoint_config = dict(interval=5)
 log_config = dict(
     interval=10,
     hooks=[
@@ -212,7 +212,7 @@ log_level = 'INFO'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
-evaluation = dict(save_best='bbox_mAP', metric=['bbox'])
+# evaluation = dict(save_best='bbox_mAP', metric=['bbox'])
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 work_dir = './work_dirs/' + expr_name
 gpu_ids = range(0, 1)

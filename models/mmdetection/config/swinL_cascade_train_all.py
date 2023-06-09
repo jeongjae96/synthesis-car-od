@@ -17,17 +17,52 @@ img_norm_cfg = dict(
 )
 
 train_alb_transform = [
-    # dict(
-    #     type='ToGray',
-    #     p=1.0
-    # ),
-    # dict(
-    #     type='CLAHE',
-    #     p=1.0
-    # ),
     dict(
-        type='MotionBlur',
-        blur_limit=3,
+        type='OneOf',
+        transforms = [
+            dict(
+                type='ToGray',
+                p=1
+            ),
+            dict(
+                type='ColorJitter',
+                brightness=0.4,
+                contrast=0.4,
+                saturation=0.4,
+                hue=0.4,
+                p=1
+            )
+        ],
+        p=0.5
+    ),
+    dict(
+        type='CLAHE',
+        p=0.5
+    ),
+    dict(
+        type='OneOf',
+        transforms = [
+            dict(
+                type='MotionBlur',
+                blur_limit=3,
+                p=1
+            ),
+            dict(
+                type='Blur',
+                blur_limit=3,
+                p=1
+            ),
+            dict(
+                type='MedianBlur',
+                blur_limit=3,
+                p=1
+            ),
+            dict(
+                type='GaussianBlur',
+                blur_limit=3,
+                p=1
+            ),
+        ],
         p=0.3
     )
 ]
@@ -147,7 +182,7 @@ data = dict(
     train=dict(
         type=dataset_type,
         classes=classes,
-        ann_file=data_root + f'coco/train_{fold_num}.json',
+        ann_file=data_root + f'coco/train.json',
         img_prefix=data_root,
         pipeline=train_pipeline),
     
@@ -166,7 +201,7 @@ data = dict(
         pipeline=test_pipeline))
 
 print('\n'*10)
-print(f'starts k-fold with {data_root}train{fold_num}.json')
+print(f'starts training {data_root}train.json')
 print('\n'*10)
 
 
@@ -183,17 +218,17 @@ lr_config = dict(
     warmup_ratio=1.0 / 10,
     min_lr_ratio=7e-6)
 # runtime settings
-total_epochs = 20
+total_epochs = 50
 
 
 ###########################################################################
 #Runtime
 ###########################################################################
 
-expr_name = f'swinB_fold_{fold_num}'
+expr_name = 'swinL'
 dist_params = dict(backend='nccl')
 
-checkpoint_config = dict(interval=9)
+checkpoint_config = dict(interval=10)
 log_config = dict(
     interval=10,
     hooks=[
@@ -212,7 +247,7 @@ log_level = 'INFO'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
-evaluation = dict(save_best='bbox_mAP', metric=['bbox'])
+# evaluation = dict(save_best='bbox_mAP', metric=['bbox'])
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 work_dir = './work_dirs/' + expr_name
 gpu_ids = range(0, 1)
@@ -222,14 +257,14 @@ gpu_ids = range(0, 1)
 #Model
 ###########################################################################
 # model settings
-pretrained = 'https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_base_patch4_window7_224_22kto1k.pth'
+pretrained ='https://github.com/SwinTransformer/storage/releases/download/v1.0.0/swin_large_patch4_window7_224_22kto1k.pth'
 model = dict(
     type='CascadeRCNN',
     backbone=dict(
         type='SwinTransformer',
-        embed_dims=128,
+        embed_dims=192,
         depths=[2, 2, 18, 2],
-        num_heads=[4, 8, 16, 32],
+        num_heads=[6, 12, 24, 48],
         window_size=7,
         mlp_ratio=4,
         qkv_bias=True,
@@ -244,7 +279,7 @@ model = dict(
         init_cfg=dict(type='Pretrained', checkpoint=pretrained)),
     neck=dict(
         type='FPN',
-        in_channels=[128, 128*2, 128*4, 128*8],
+        in_channels=[192, 192*2, 192*4, 192*8],
         out_channels=256,
         num_outs=5),
     rpn_head=dict(

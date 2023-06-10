@@ -21,6 +21,25 @@ train_alb_transform = [
         type='OneOf',
         transforms = [
             dict(
+                type='ISONoise',
+                intensity=(0.1,0.3),
+                p=1
+            ),
+            dict(
+                type='GaussNoise',
+                p=1
+            ),
+            dict(
+                type='CoarseDropout',
+                p=1
+            )
+        ],
+        p=0.3
+    ),
+    dict(
+        type='OneOf',
+        transforms = [
+            dict(
                 type='ToGray',
                 p=1
             ),
@@ -106,11 +125,7 @@ val_pipeline = [
                 multiscale_mode='value',
                 keep_ratio=True),
             dict(type='RandomFlip', flip_ratio=0.0),
-            dict(
-                type='Normalize',
-                mean=[123.675, 116.28, 103.53],
-                std=[58.395, 57.12, 57.375],
-                to_rgb=True),
+            dict(type='Normalize', **img_norm_cfg),
             dict(type='ImageToTensor', keys=['img']),
             dict(type='Collect', keys=['img'])
         ])
@@ -129,11 +144,7 @@ test_pipeline = [
                 multiscale_mode='value',
                 keep_ratio=True),
             dict(type='RandomFlip', flip_ratio=0.0),
-            dict(
-                type='Normalize',
-                mean=[123.675, 116.28, 103.53],
-                std=[58.395, 57.12, 57.375],
-                to_rgb=True),
+            dict(type='Normalize', **img_norm_cfg),
             dict(type='ImageToTensor', keys=['img']),
             dict(type='Collect', keys=['img'])
         ])
@@ -218,7 +229,7 @@ lr_config = dict(
     warmup_ratio=1.0 / 10,
     min_lr_ratio=7e-6)
 # runtime settings
-total_epochs = 50
+total_epochs = 40
 
 
 ###########################################################################
@@ -233,13 +244,6 @@ log_config = dict(
     interval=10,
     hooks=[
         dict(type='TextLoggerHook'),  
-        dict(
-            type='WandbLoggerHook',
-            init_kwargs=dict(
-                project='swinB-cascade-kfold',
-                name=expr_name,
-                entity='cv-09'
-        ))
     ])
 # custom_hooks = [dict(type='NumClassCheckHook')]
 dist_params = dict(backend='nccl')

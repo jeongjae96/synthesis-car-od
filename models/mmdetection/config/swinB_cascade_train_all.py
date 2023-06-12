@@ -2,7 +2,8 @@
 # k-fold cross validation
 ###########################################################################
 fold_num = 3
-data_root = '/opt/ml/synthesis-car-od/data/'
+# data_root = '/opt/ml/synthesis-car-od/data/'
+data_root = '../../../data/'
 
 
 ###########################################################################
@@ -18,7 +19,21 @@ img_norm_cfg = dict(
 
 train_alb_transform = [
     dict(
-        type='ToGray',
+        type='OneOf',
+        transforms = [
+            dict(
+                type='ToGray',
+                p=1
+            ),
+            dict(
+                type='ColorJitter',
+                brightness=0.4,
+                contrast=0.4,
+                saturation=0.4,
+                hue=0.4,
+                p=1
+            )
+        ],
         p=0.5
     ),
     dict(
@@ -26,8 +41,29 @@ train_alb_transform = [
         p=0.5
     ),
     dict(
-        type='MotionBlur',
-        blur_limit=3,
+        type='OneOf',
+        transforms = [
+            dict(
+                type='MotionBlur',
+                blur_limit=3,
+                p=1
+            ),
+            dict(
+                type='Blur',
+                blur_limit=3,
+                p=1
+            ),
+            dict(
+                type='MedianBlur',
+                blur_limit=3,
+                p=1
+            ),
+            dict(
+                type='GaussianBlur',
+                blur_limit=3,
+                p=1
+            ),
+        ],
         p=0.3
     )
 ]
@@ -71,11 +107,7 @@ val_pipeline = [
                 multiscale_mode='value',
                 keep_ratio=True),
             dict(type='RandomFlip', flip_ratio=0.0),
-            dict(
-                type='Normalize',
-                mean=[123.675, 116.28, 103.53],
-                std=[58.395, 57.12, 57.375],
-                to_rgb=True),
+            dict(type='Normalize', **img_norm_cfg),
             dict(type='ImageToTensor', keys=['img']),
             dict(type='Collect', keys=['img'])
         ])
@@ -94,11 +126,7 @@ test_pipeline = [
                 multiscale_mode='value',
                 keep_ratio=True),
             dict(type='RandomFlip', flip_ratio=0.0),
-            dict(
-                type='Normalize',
-                mean=[123.675, 116.28, 103.53],
-                std=[58.395, 57.12, 57.375],
-                to_rgb=True),
+            dict(type='Normalize', **img_norm_cfg),
             dict(type='ImageToTensor', keys=['img']),
             dict(type='Collect', keys=['img'])
         ])
@@ -183,7 +211,7 @@ lr_config = dict(
     warmup_ratio=1.0 / 10,
     min_lr_ratio=7e-6)
 # runtime settings
-total_epochs = 10
+total_epochs = 50
 
 
 ###########################################################################
@@ -193,7 +221,7 @@ total_epochs = 10
 expr_name = f'swinB'
 dist_params = dict(backend='nccl')
 
-checkpoint_config = dict(interval=5)
+checkpoint_config = dict(interval=10)
 log_config = dict(
     interval=10,
     hooks=[

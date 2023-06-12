@@ -21,25 +21,6 @@ train_alb_transform = [
         type='OneOf',
         transforms = [
             dict(
-                type='ISONoise',
-                intensity=(0.1,0.3),
-                p=1
-            ),
-            dict(
-                type='GaussNoise',
-                p=1
-            ),
-            dict(
-                type='CoarseDropout',
-                p=1
-            )
-        ],
-        p=0.3
-    ),
-    dict(
-        type='OneOf',
-        transforms = [
-            dict(
                 type='ToGray',
                 p=1
             ),

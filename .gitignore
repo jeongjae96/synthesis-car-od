@@ -266,7 +266,6 @@ data/
 *.pth
 *.yaml
 *.jpg
-*.txt
 
 YOLOv8/
 

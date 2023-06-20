@@ -130,12 +130,31 @@ def make_data_yaml(data_root, n_splits):
         categories[i] = name
 
     print('saving YAML configuration...')
+
+    train_yaml_config = {
+        'train' : os.path.join(os.path.abspath(yolo_path).replace('\\', '/'), f'train.txt'),
+        'val' : os.path.join(os.path.abspath(yolo_path).replace('\\', '/'), f'val_sample.txt'),
+        'test' : os.path.join(os.path.abspath(yolo_path).replace('\\', '/'), 'test.txt'),
+        'nc' : len(category_names),
+        'names' : categories,
+    }
+
+    with open(os.path.join(yolo_path, 'all.yaml'), 'w') as file:
+        yaml.dump(train_yaml_config, file, sort_keys=False)
+
     for i in range(n_splits):
+        # yaml_config = {
+        #     'path' : os.path.abspath(yolo_path).replace('\\', '/') + '/',
+        #     'train' : f'train_{i}.txt',
+        #     'val' : f'val_{i}.txt',
+        #     'test' : f'test.txt',
+        #     'nc' : len(category_names),
+        #     'names' : categories,
+        # }
         yaml_config = {
-            'path' : os.path.abspath(yolo_path).replace('\\', '/') + '/',
-            'train' : f'train_{i}.txt',
-            'val' : f'val_{i}.txt',
-            'test' : f'test.txt',
+            'train' : os.path.join(os.path.abspath(yolo_path).replace('\\', '/'), f'train_{i}.txt'),
+            'val' : os.path.join(os.path.abspath(yolo_path).replace('\\', '/'), f'val_{i}.txt'),
+            'test' : os.path.join(os.path.abspath(yolo_path).replace('\\', '/'), 'test.txt'),
             'nc' : len(category_names),
             'names' : categories,
         }
@@ -162,6 +181,14 @@ def convert2yolo(
         n_splits,
         seed
     )
+
+    train_image_paths = sorted(glob.glob(os.path.join(data_root, 'images/', '*.png')))
+    train_dest_path = os.path.join(yolo_path, 'train.txt')
+    save_yolo_image_path(train_image_paths, train_dest_path)
+
+    sample_image_path = [train_image_paths[0]]
+    sample_dest_path = os.path.join(yolo_path, 'val_sample.txt')
+    save_yolo_image_path(sample_image_path, sample_dest_path)
 
     test_image_paths = sorted(glob.glob(os.path.join(data_root, 'test/', '*.png')))
     test_dest_path = os.path.join(yolo_path, 'test.txt')

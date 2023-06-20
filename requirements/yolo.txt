@@ -39,5 +39,8 @@ thop>=0.1.1  # FLOPs computation
 # roboflow
 
 # YOLO V8 -------------------------------------
-ultralytics==8.0.0
+ultralytics==8.0.120
 GitPython>=3.1.24
+
+jupyter
+ipykernel

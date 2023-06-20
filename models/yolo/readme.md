@@ -63,3 +63,14 @@ python test.py --data ../../../data/yolo/all.yaml --img-size 1024 --batch-size 3
 ```bash
 python label2submission.py --data ../../../data/ --target yolov7-e6e --result ../../../submissions/yolov7.csv
 ```
+
+
+---
+# YOLOv8
+
+```bash
+# start yolov8
+cd yolov8
+```
+
+### run yolo_pipeline.ipynb

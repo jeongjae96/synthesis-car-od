@@ -2,9 +2,7 @@
 # k-fold cross validation
 ###########################################################################
 fold_num = 3
-# data_root = '/opt/ml/synthesis-car-od/data/'
 data_root = '../../../data/'
-
 
 ###########################################################################
 #Dataset
@@ -193,15 +191,10 @@ data = dict(
         img_prefix=data_root,
         pipeline=test_pipeline))
 
-print('\n'*10)
-print(f'starts k-fold with {data_root}train.json')
-print('\n'*10)
-
-
 ###########################################################################
 #Schedule
 ###########################################################################
-lr = 1e-4 /2  # max learning rate
+lr = 1e-4 / 2  # max learning rate
 optimizer = dict(type='AdamW', lr=lr, weight_decay=0.01)
 optimizer_config = dict(grad_clip=dict(max_norm=10, norm_type=2))
 lr_config = dict(
@@ -213,12 +206,10 @@ lr_config = dict(
 # runtime settings
 total_epochs = 50
 
-
 ###########################################################################
 #Runtime
 ###########################################################################
-
-expr_name = f'swinB'
+expr_name = f'cascade_rcnn_swinB'
 dist_params = dict(backend='nccl')
 
 checkpoint_config = dict(interval=10)
@@ -226,25 +217,15 @@ log_config = dict(
     interval=10,
     hooks=[
         dict(type='TextLoggerHook'),  
-        dict(
-            type='WandbLoggerHook',
-            init_kwargs=dict(
-                project='swinB-cascade-kfold',
-                name=expr_name,
-                entity='cv-09'
-        ))
     ])
-# custom_hooks = [dict(type='NumClassCheckHook')]
 dist_params = dict(backend='nccl')
 log_level = 'INFO'
 load_from = None
 resume_from = None
 workflow = [('train', 1)]
-# evaluation = dict(save_best='bbox_mAP', metric=['bbox'])
 runner = dict(type='EpochBasedRunner', max_epochs=total_epochs)
 work_dir = './work_dirs/' + expr_name
 gpu_ids = range(0, 1)
-
 
 ###########################################################################
 #Model
@@ -436,4 +417,3 @@ model = dict(
             score_thr=0.00,
             nms=dict(type='nms', iou_threshold=0.5),
             max_per_img=100)))
-            

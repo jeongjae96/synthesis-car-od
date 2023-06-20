@@ -145,15 +145,6 @@ for i, out in enumerate(tqdm(output)):
             # point4_x : 검출한 객체 좌하단 x좌표 == x_min
             # point4_y : 검출한 객체 좌하단 y좌표 == y_max
 
-            # results.loc[len(results)] = {
-            #     "file_name": file_name,
-            #     "class_id": j,
-            #     "confidence": score,
-            #     "point1_x": x_min, "point1_y": y_min,
-            #     "point2_x": x_max, "point2_y": y_min,
-            #     "point3_x": x_max, "point3_y": y_max,
-            #     "point4_x": x_min, "point4_y": y_max
-            # }
             file_names.append(file_name)
             class_ids.append(j)
             confidences.append(score)

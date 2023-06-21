@@ -35,8 +35,46 @@
 │        │   └── ...
 │        └── yolov8
 │            └── ...
+├── requirements
+│    └── *.txt
 ├── data_preprocess
+│    └── ...
+├── submissions
 │    └── ...
 └── examples
      └── ...
+```
+
+## Process
+
+### prerequisites
+
+- ```data``` 폴더 생성 후, [데이터셋](https://dacon.io/competitions/official/236107/data)을 [File Structure](https://github.com/jeongjae96/synthesis-car-od#file-structure)에 맞게 이동
+
+```
+.
+└── data
+    ├── train
+    │   ├── syn_*.txt
+    │   └── syn_*.png
+    ├── test
+    │    └── *.png
+    ├── classes.txt
+    └── sample_submission.csv
+```
+
+- ```submissions``` 폴더 생성
+
+```
+# submissions csv를 저장할 폴더
+mkdir submissions
+```
+
+- MMdetection, Yolo 모델 input 데이터를 위한 포맷 변환
+
+```
+# 가상환경 구축 및 필요 라이브러리 설치
+conda create -n data_preprocess python=3.9 -y
+conda activate data_preprocess
+pip install -r requirements/data_preprocess.txt   
 ```

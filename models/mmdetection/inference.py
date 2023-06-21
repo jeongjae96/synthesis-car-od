@@ -83,7 +83,7 @@ cfg = Config.fromfile(config_file)
 # data config 수정
 cfg.data.test.classes = classes
 cfg.data.test.img_prefix = root
-cfg.data.test.ann_file = os.path.join(root, 'test.json')
+cfg.data.test.ann_file = os.path.join(root, 'coco/test.json')
 cfg.data.test.pipeline[1]['img_scale'] = (1024,1024) # Resize
 cfg.data.test.test_mode = True
 cfg.data.samples_per_gpu = 4

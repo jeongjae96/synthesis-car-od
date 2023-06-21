@@ -74,13 +74,13 @@ cd ..
 - Inference ```cascade_rcnn_swinB```
 
 ```
-python inference.py mmdetection_v2/work_dirs/cascade_rcnn_swinB/ -w epoch_50.pth
+python inference.py -c mmdetection_v2/work_dirs/cascade_rcnn_swinB/ -w epoch_50.pth
 ```
 
 - Inference ```cascade_rcnn_swinL```
 
 ```
-python inference.py mmdetection_v2/work_dirs/cascade_rcnn_swinL/ -w epoch_40.pth
+python inference.py -c mmdetection_v2/work_dirs/cascade_rcnn_swinL/ -w epoch_40.pth
 ```
 
 ## [v3.0.0](https://mmdetection.readthedocs.io/en/latest/)

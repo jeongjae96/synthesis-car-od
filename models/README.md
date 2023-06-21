@@ -18,7 +18,7 @@ conda activate openmmlab_v2
 ```
 # example
 # CUDA 11.0
-conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch
+conda install pytorch==1.7.1 torchvision==0.8.2 torchaudio==0.7.2 cudatoolkit=11.0 -c pytorch -y
 ```
 
 3. Clone the mmdetection v2.25.2 repository.
@@ -40,13 +40,47 @@ pip install -U openmim
 mim install mmengine
 mim install mmcv-full==1.7.0
 pip install -r requirements/albu.txt
-pip install wandb
+pip install tqdm
 ```
 
 On macOS, replace the last command with
 
 ```
 CC=clang CXX=clang++ CFLAGS='-stdlib=libc++' pip install -e .
+```
+
+### Train
+
+- Train ```cascade_rcnn_swinB```
+
+```
+python tools/train.py ../config/cascade_rcnn_swinB.py --seed 41 --deterministic --no-validate
+```
+
+- Train ```cascade_rcnn_swinL```
+
+```
+python tools/train.py ../config/cascade_rcnn_swinL.py --seed 41 --deterministic --no-validate
+```
+
+### Inference
+
+- Move to ```mmdetection``` folder
+
+```
+cd ..
+```
+
+- Inference ```cascade_rcnn_swinB```
+
+```
+python inference.py mmdetection_v2/work_dirs/cascade_rcnn_swinB/ -w epoch_50.pth
+```
+
+- Inference ```cascade_rcnn_swinL```
+
+```
+python inference.py mmdetection_v2/work_dirs/cascade_rcnn_swinL/ -w epoch_40.pth
 ```
 
 ## [v3.0.0](https://mmdetection.readthedocs.io/en/latest/)

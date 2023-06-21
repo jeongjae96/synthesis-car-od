@@ -49,6 +49,12 @@
 
 ### prerequisites
 
+- Clone the repository
+
+```
+git clone https://github.com/jeongjae96/synthesis-car-od.git
+```
+
 - ```data``` 폴더 생성 후, [데이터셋](https://dacon.io/competitions/official/236107/data)을 [File Structure](https://github.com/jeongjae96/synthesis-car-od#file-structure)에 맞게 이동
 
 ```
@@ -104,3 +110,27 @@ cd ../models/mmdetection/
 - Train & Inference (추후 링크 연결 예정)
 
 #### Yolo Models
+
+Yolo 관련 설명 작성 부탁드립니다.
+
+### Bbox Ensemble
+
+```
+# 경로 이동
+# Yolo 작업에 따라 작성 예정
+```
+
+```
+# 가상환경 구축
+conda create -n ensemble python=3.9 -y
+conda activate ensemble
+```
+
+```
+# 필요 라이브러리 설치
+pip install -r requirements/ensemble.txt   
+```
+
+- ```ensemble/WBF_ensemble.ipynb``` 파일에서 ```ensemble``` 커널 설정 후, 실행
+
+- 최종 제출 파일: ```submissions/submission.csv```

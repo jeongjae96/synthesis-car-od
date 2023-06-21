@@ -14,7 +14,7 @@ import pandas as pd
 import numpy as np
 from pycocotools.coco import COCO
 
-parser = argparse.ArgumentParser(description='inference MMDtection models.')
+parser = argparse.ArgumentParser(description='inference MMDetection models.')
 parser.add_argument(
     '-c',
     '--config_path',
@@ -84,7 +84,6 @@ cfg = Config.fromfile(config_file)
 cfg.data.test.classes = classes
 cfg.data.test.img_prefix = root
 cfg.data.test.ann_file = os.path.join(root, 'test.json')
-# cfg.data.test.pipeline[1]['img_scale'] = (512,512) # Resize
 cfg.data.test.pipeline[1]['img_scale'] = (1024,1024) # Resize
 cfg.data.test.test_mode = True
 cfg.data.samples_per_gpu = 4
@@ -166,4 +165,4 @@ results['point4_x'] = x_mins
 results['point4_y'] = y_maxes
 
 results.sort_values(by=['confidence'], ascending=False, inplace=True)
-results.to_csv(f'{config_file.split(".")[0]}_{args.weights.split(".")[0]}.csv', index=False)
+results.to_csv(os.path.join(f'{args.root_dir}', 'submissions/', f'{os.path.basename(config_file).split(".")[0]}.csv'), index=False)

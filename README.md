@@ -88,3 +88,19 @@ pip install -r requirements/data_preprocess.txt
 cd data_preprocess
 python main.py
 ```
+
+### Train & Inference
+
+#### MMdetection Models
+
+- 경로 이동
+
+```
+cd ../models/mmdetection/
+```
+
+- Prerequisites & Installation (추후 링크 연결 예정)
+
+- Train & Inference (추후 링크 연결 예정)
+
+#### Yolo Models

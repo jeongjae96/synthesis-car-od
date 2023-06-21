@@ -73,8 +73,18 @@ mkdir submissions
 - MMdetection, Yolo 모델 input 데이터를 위한 포맷 변환
 
 ```
-# 가상환경 구축 및 필요 라이브러리 설치
+# 가상환경 구축
 conda create -n data_preprocess python=3.9 -y
 conda activate data_preprocess
+```
+
+```
+# 필요 라이브러리 설치
 pip install -r requirements/data_preprocess.txt   
+```
+
+```
+# 데이터 포맷 변환
+cd data_preprocess
+python main.py
 ```

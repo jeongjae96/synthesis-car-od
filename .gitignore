@@ -268,5 +268,7 @@ data/
 *.jpg
 
 YOLOv8/
+v2/
+v8x/
 
 wandb/

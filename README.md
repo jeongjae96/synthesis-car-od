@@ -107,9 +107,9 @@ python main.py
 cd ../models/mmdetection/
 ```
 
-- Prerequisites & Installation (추후 링크 연결 예정)
+- [Prerequisites & Installation](https://github.com/jeongjae96/synthesis-car-od/tree/main/models/mmdetection#v2252)
 
-- Train & Inference (추후 링크 연결 예정)
+- [Train & Inference](https://github.com/jeongjae96/synthesis-car-od/tree/main/models/mmdetection#train)
 
 #### Yolo Models
 

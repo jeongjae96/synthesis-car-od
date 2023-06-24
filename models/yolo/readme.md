@@ -68,9 +68,5 @@ python label2submission.py --data ../../../data/ --target yolov7-e6e --result ..
 ---
 # YOLOv8
 
-```bash
-# start yolov8
-cd yolov8
-```
 
-### run yolo_pipeline.ipynb
+### run yolov8/yolo_pipeline.ipynb

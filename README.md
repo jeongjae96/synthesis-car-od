@@ -101,7 +101,7 @@ python main.py
 
 #### MMdetection Models
 
-- 경로 이동
+- 경로 이동(synthesis-car-od/models/mmdetection/)
 
 ```
 cd ../models/mmdetection/
@@ -113,13 +113,21 @@ cd ../models/mmdetection/
 
 #### Yolo Models
 
-Yolo 관련 설명 작성 부탁드립니다.
+- 경로 이동(synthesis-car-od/models/yolo/)
+
+```
+cd ../yolo/
+```
+
+- [Prerequisites & Installation](https://github.com/jeongjae96/synthesis-car-od/blob/main/models/yolo/readme.md#anaconda%EB%A5%BC-%EC%9D%B4%EC%9A%A9%ED%95%B4-python-38-%EB%B2%84%EC%A0%84%EC%9D%98-%EA%B0%80%EC%83%81%ED%99%98%EA%B2%BD-%EC%83%9D%EC%84%B1)
+
+- [Train & Inference](https://github.com/jeongjae96/synthesis-car-od/blob/main/models/yolo/readme.md#train)
 
 ### Bbox Ensemble
 
 ```
-# 경로 이동
-# Yolo 작업에 따라 작성 예정
+# 경로 이동(synthesis-car-od/)
+cd ../../../
 ```
 
 ```
